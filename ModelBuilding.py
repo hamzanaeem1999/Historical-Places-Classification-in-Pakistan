@@ -28,7 +28,7 @@ import tensorflow as tf
 
 model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Dense(64, input_shape=(128,), activation='relu'))
-model.add(tf.keras.layers.Dense(5, activation='softmax'))
+model.add(tf.keras.layers.Dense(3, activation='softmax'))
 # opt = RMSprop(lr=0.001)
 model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
 # monitor=EarlyStopping(monitor='val_loss',patience=100)
