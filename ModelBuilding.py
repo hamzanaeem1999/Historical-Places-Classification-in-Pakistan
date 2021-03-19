@@ -4,7 +4,7 @@ from sklearn.metrics import confusion_matrix
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.callbacks import TensorBoard
 
-data = np.load('model_features1.npy', allow_pickle=True)
+data = np.load('desc_feat.npy', allow_pickle=True)
 
 NAME="ITA MLP-{}".format(int(time.time()))
 tensorboard=TensorBoard(log_dir="E:\\ITA MLP\\logs\\{}".format(NAME))
