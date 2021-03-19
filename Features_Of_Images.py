@@ -33,5 +33,5 @@ def create_training_data():
 
 create_training_data()
 random.shuffle(training_data)
-np.save('desc_feat.npy', np.asarray(training_data))
+np.save('model_features1.npy', np.asarray(training_data))
 print('Shape', np.asarray(training_data).shape)
