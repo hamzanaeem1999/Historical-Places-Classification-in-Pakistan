@@ -4,7 +4,7 @@ import numpy as np
 import random
 
 DataDir = r"C:\Users\Hamza\OneDrive\Desktop\All Images1\Training Data"
-Categories = ["Badshahi Masjid", "Minare Pakistan", "ShahiQila(Lahore Fort)"]
+Categories = ["Badshahi Masjid","Faisal Masjid","Minare Pakistan","Quaid's Tomb","ShahiQila(Lahore Fort)"]
 descriptors = []
 class_num1 = []
 sift = cv2.xfeatures2d.SIFT_create(40)
@@ -33,5 +33,5 @@ def create_training_data():
 
 create_training_data()
 random.shuffle(training_data)
-np.save('model_features1.npy', np.asarray(training_data))
+np.save('desc_feat.npy', np.asarray(training_data))
 print('Shape', np.asarray(training_data).shape)
