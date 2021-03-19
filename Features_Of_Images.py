@@ -1,26 +1,37 @@
 import cv2
+import os
 import numpy as np
-import tensorflow as tf
+import random
 
+DataDir = r"C:\Users\Hamza\OneDrive\Desktop\All Images1\Training Data"
 Categories = ["Badshahi Masjid", "Minare Pakistan", "ShahiQila(Lahore Fort)"]
+descriptors = []
+class_num1 = []
+sift = cv2.xfeatures2d.SIFT_create(40)
 
-sift = cv2.xfeatures2d.SIFT_create()
-
-
-def prepare(filepath):
-    IMG_SIZE = 124, 124
-    img_array = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
-    new_array = cv2.resize(img_array, IMG_SIZE)
-    keyImage, desImage = sift.detectAndCompute(new_array, None)
-    desImage=(desImage/255).astype('float32')
-    feat = np.sum(desImage, axis=0)
-    return feat.reshape(-1, 128)
+training_data = []
 
 
-model = tf.keras.models.load_model("Superclass_model2.h5")
+def create_training_data():
+    for category in Categories:
+        path = os.path.join(DataDir, category)
+        class_num = Categories.index(category)
+        IMG_SIZE = (124, 124)
+        for img in os.listdir(path):
+            try:
+                global new_array, desImage
+                img_arr = cv2.imread(os.path.join(path, img), cv2.IMREAD_GRAYSCALE)
+                new_array = cv2.resize(img_arr, IMG_SIZE)
+                keyImage, desImage = sift.detectAndCompute(new_array, None)
+                # np.savetxt('des/' + img[:-3] + '.csv', desImage, delimiter='\t', fmt='%1.4e')
+                feat = np.sum(desImage, axis=0)  # columns wise adding
+                training_data.append([feat, class_num])
+                # print("# kps: {}, filename:{}, descriptors: {}".format(len(keyImage), img, desImage.shape))
+            except Exception as e:
+                pass
 
-prediction = model.predict([prepare(r'C:\Users\Hamza\OneDrive\Desktop\MinarePakistan\m6.jpeg')])
-print("Probability of predictions are: ",prediction)
-highest=np.argmax(prediction)
-print("Highest position : ", highest)
-# print("Specified class is: ",Categories[int(prediction[0][0])])
+
+create_training_data()
+random.shuffle(training_data)
+np.save('desc_feat.npy', np.asarray(training_data))
+print('Shape', np.asarray(training_data).shape)
